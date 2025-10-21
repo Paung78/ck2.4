@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIGWIN Viewer</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --warning-color: #f39c12;
+      --purple-color: #9b59b6;
+      --teal-color: #1abc9c;
+      --light-gray: #f5f5f5;
+      --border-color: #e0e0e0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.4;
+      color: #333;
+      background-color: #f9f9f9;
+      padding: 0;
+      max-width: 100%;
+      margin: 0 auto;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    
+    /* External Controls - Placed above CK Lottery Website */
+    .external-controls {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+    }
+    
+    .prediction-overlay {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 4px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .prediction-overlay .prediction-box {
+      flex: 1;
+      margin-right: 4px;
+      padding: 4px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 4px;
+      color: white;
+      text-align: center;
+      font-size: 10px;
+    }
+    
+    .prediction-overlay .prediction-result {
+      font-size: 11px;
+      font-weight: 700;
+    }
+    
+    .prediction-header {
+      font-weight: 600;
+      margin-bottom: 2px;
+      font-size: 9px;
+      opacity: 0.9;
+    }
+    
+    .issue-number {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-bottom: 2px;
+    }
+    
+    /* Menu Styles */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      height: 35px;
+    }
+    
+    .menu-btn {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .menu-btn.active {
+      background-color: var(--secondary-color);
+    }
+    
+    .menu-btn:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .content-section {
+      display: none;
+      height: 100vh;
+      overflow: auto;
+    }
+    
+    .content-section.active {
+      display: block;
+    }
+    
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+    
+    .subtitle {
+      color: #7f8c8d;
+      font-size: 12px;
+    }
+    
+    .status-card {
+      background-color: var(--light-gray);
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-left: 4px solid var(--secondary-color);
+      font-size: 12px;
+    }
+    
+    .status-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--primary-color);
+      font-size: 13px;
+    }
+    
+    .server-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .server-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .server-btn {
+      padding: 12px 6px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .server-btn.active {
+      box-shadow: 0 0 0 2px var(--success-color);
+    }
+    
+    .server-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .server-1 {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .server-2 {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+      color: white;
+    }
+    
+    .server-3 {
+      background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+      color: white;
+    }
+    
+    .server-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 5px;
+      font-size: 10px;
+    }
+    
+    .status-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #e74c3c;
+    }
+    
+    .status-indicator.active {
+      background: #27ae60;
+    }
+    
+    .cooldown-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 9px;
+      font-weight: 600;
+    }
+    
+    .cooldown-timer {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    
+    .prediction-section {
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+      font-size: 14px;
+      text-align: center;
+    }
+    
+    .prediction-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .prediction-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      padding: 15px;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .prediction-big {
+      color: #ffeb3b;
+    }
+    
+    .prediction-small {
+      color: #4fc3f7;
+    }
+    
+    .countdown-box {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+      border-radius: 8px;
+      padding: 15px;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    .circular-countdown {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+    }
+    
+    .countdown-circle {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    
+    .countdown-background {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.2);
+      stroke-width: 3;
+    }
+    
+    .countdown-progress {
+      fill: none;
+      stroke: #ffeb3b;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-dasharray: 226;
+      stroke-dashoffset: 226;
+      transition: stroke-dashoffset 1s linear;
+    }
+    
+    .countdown-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    
+    .countdown-time {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 1px;
+    }
+    
+    .countdown-label {
+      font-size: 10px;
+      opacity: 0.9;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .stat-box {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+    
+    .stat-bar {
+      width: 100%;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 5px;
+    }
+    
+    .big-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #ff6b6b, #ffa726);
+      border-radius: 8px;
+      width: 0%;
+      transition: width 1s ease-in-out;
+    }
+    
+    .small-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4ecdc4, #45b7d1);
+      border-radius: 8px;
+      width: 0%;
+      transition: width 1s ease-in-out;
+    }
+    
+    .stat-count {
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .history-section {
+      margin-bottom: 15px;
+    }
+    
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    
+    .history-table thead {
+      background-color: var(--primary-color);
+      color: white;
+      position: sticky;
+      top: 0;
+    }
+    
+    .history-table th, 
+    .history-table td {
+      padding: 8px 6px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .history-table th {
+      font-weight: 600;
+      font-size: 11px;
+    }
+    
+    .history-table tbody tr {
+      transition: background-color 0.2s;
+    }
+    
+    .history-table tbody tr:hover {
+      background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    .history-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .red {
+      color: var(--danger-color);
+      font-weight: 600;
+    }
+    
+    .green {
+      color: var(--success-color);
+      font-weight: 600;
+    }
+    
+    .big {
+      color: var(--warning-color);
+      font-weight: 700;
+    }
+    
+    .small {
+      color: var(--secondary-color);
+      font-weight: 700;
+    }
+    
+    .no-data {
+      text-align: center;
+      color: #7f8c8d;
+      padding: 15px;
+      font-style: italic;
+      font-size: 12px;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      font-size: 12px;
+    }
+    
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(52, 152, 219, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--secondary-color);
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* CK Lottery Website Styles */
+    .ck-lottery-container {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      overflow: hidden;
+    }
+    
+    .iframe-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      margin-top: 80px; /* Space for external controls */
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 480px) {
+      .external-controls {
+        padding: 3px;
+      }
+      
+      .prediction-overlay {
+        padding: 3px;
+      }
+      
+      .prediction-overlay .prediction-box {
+        padding: 3px;
+        margin-right: 3px;
+        font-size: 9px;
+      }
+      
+      .prediction-overlay .prediction-result {
+        font-size: 10px;
+      }
+      
+      .prediction-header {
+        font-size: 8px;
+        margin-bottom: 1px;
+      }
+      
+      .issue-number {
+        font-size: 9px;
+        padding: 1px 4px;
+      }
+      
+      .menu-container {
+        height: 30px;
+      }
+      
+      .menu-btn {
+        padding: 6px;
+        font-size: 10px;
+      }
+      
+      .iframe-container {
+        margin-top: 70px; /* Smaller space for mobile */
+      }
+    }
+    
+    /* Scrollable table for mobile */
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- External Controls - Placed above CK Lottery Website -->
+  <div class="external-controls">
+    <div class="prediction-overlay">
+      <div class="prediction-box">
+        <div class="prediction-header">Prediction Issue</div>
+        <div class="issue-number" id="ck-next-issue">-</div>
+        <div class="prediction-header">Prediction</div>
+        <div class="prediction-result" id="ck-prediction-value">SELECT SERVER</div>
+      </div>
+    </div>
+    
+    <div class="menu-container">
+      <button class="menu-btn active" id="prediction-btn" onclick="showSection('prediction')">Prediction</button>
+      <button class="menu-btn" id="cklottery-btn" onclick="showSection('cklottery')">CK Lottery</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Prediction Section -->
+    <div id="prediction-section" class="content-section active">
+      <div class="container">
+        <header>
+          <h1>BIGWIN Viewer</h1>
+          <p class="subtitle">Real-time Lottery Data with AI Prediction</p>
+        </header>
+        
+        <div class="status-card">
+          <div class="status-title">Connection Status</div>
+          <div id="meta">Waiting for broadcaster...</div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="server-controls">
+          <button class="server-btn server-1" id="server1-btn" onclick="activateServer(1)">
+            Results Big/Small Prediction
+            <div class="server-status">
+              <div class="status-indicator" id="server1-indicator"></div>
+              <span id="server1-status">OFF</span>
+            </div>
+            <div class="cooldown-overlay" id="server1-cooldown" style="display: none;">
+              <div class="cooldown-timer" id="server1-timer">10:00</div>
+            </div>
+          </button>
+          
+          <button class="server-btn server-2" id="server2-btn" onclick="activateServer(2)">
+            Premium Code Prediction
+            <div class="server-status">
+              <div class="status-indicator" id="server2-indicator"></div>
+              <span id="server2-status">OFF</span>
+            </div>
+            <div class="cooldown-overlay" id="server2-cooldown" style="display: none;">
+              <div class="cooldown-timer" id="server2-timer">10:00</div>
+            </div>
+          </button>
+          
+          <button class="server-btn server-3" id="server3-btn" onclick="activateServer(3)">
+            AI Prediction Server
+            <div class="server-status">
+              <div class="status-indicator" id="server3-indicator"></div>
+              <span id="server3-status">OFF</span>
+            </div>
+            <div class="cooldown-overlay" id="server3-cooldown" style="display: none;">
+              <div class="cooldown-timer" id="server3-timer">10:00</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="prediction-section">
+          <div class="section-title">Next Draw Prediction</div>
+          
+          <div class="prediction-container">
+            <div class="prediction-box">
+              <div class="prediction-header">Next Issue</div>
+              <div class="issue-number" id="next-issue">-</div>
+              <div class="prediction-header">Prediction</div>
+              <div class="prediction-result" id="prediction-value">SELECT SERVER</div>
+              <div class="server-status" id="active-server-status">
+                <div class="status-indicator"></div>
+                <span>No server active</span>
+              </div>
+            </div>
+            
+            <div class="countdown-box">
+              <div class="prediction-header">Next Draw In</div>
+              <div class="circular-countdown">
+                <svg class="countdown-circle" viewBox="0 0 120 120">
+                  <circle class="countdown-background" cx="60" cy="60" r="54"></circle>
+                  <circle class="countdown-progress" cx="60" cy="60" r="54" id="countdown-progress"></circle>
+                </svg>
+                <div class="countdown-text">
+                  <div class="countdown-time" id="countdown-time">30s</div>
+                  <div class="countdown-label">Remaining</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Big/Small Stats (All Servers) -->
+          <div class="stats-container">
+            <div class="stat-box">
+              <div class="stat-label">BIG COUNT</div>
+              <div class="stat-bar">
+                <div class="big-bar-fill" id="big-fill"></div>
+              </div>
+              <div class="stat-count" id="big-count">0 (0%)</div>
+            </div>
+            
+            <div class="stat-box">
+              <div class="stat-label">SMALL COUNT</div>
+              <div class="stat-bar">
+                <div class="small-bar-fill" id="small-fill"></div>
+              </div>
+              <div class="stat-count" id="small-count">0 (0%)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="history-section">
+          <div class="section-title">Draw History</div>
+          <div class="table-container">
+            <table class="history-table">
+              <thead>
+                <tr>
+                  <th>Issue</th>
+                  <th>Number</th>
+                  <th>Color</th>
+                  <th>Big/Small</th>
+                  <th>Premium</th>
+                </tr>
+              </thead>
+              <tbody id="tbody">
+                <tr>
+                  <td colspan="5" class="no-data">No data available</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CK Lottery Section -->
+    <div id="cklottery-section" class="content-section">
+      <div class="iframe-container">
+        <iframe src="http://www.cklottery.info/#/register?invitationCode=81487219676" 
+                class="ck-lottery-container" 
+                id="ck-lottery-frame">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js"></script>
+
+  <script>
+  // ===== Menu System =====
+  function showSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+      section.classList.remove('active');
+    });
+    
+    // Show selected section
+    document.getElementById(`${sectionName}-section`).classList.add('active');
+    
+    // Update menu buttons
+    document.querySelectorAll('.menu-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    document.getElementById(`${sectionName}-btn`).classList.add('active');
+    
+    // Update CK Lottery prediction display if needed
+    if (sectionName === 'cklottery') {
+      updateCKPredictionDisplay();
+    }
+  }
+
+  // ===== Firebase Config =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyDj6z3O91NnlQ1zVdripiGhqQMsQhR4_ak",
+    authDomain: "ck30-35e97.firebaseapp.com",
+    databaseURL: "https://ck30-35e97-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ck30-35e97",
+    storageBucket: "ck30-35e97.firebasestorage.app",
+    messagingSenderId: "625630152314",
+    appId: "1:625630152314:web:c035009eec389371b51dc3",
+    measurementId: "G-6Z7DYPKHR2"
+  };
+  
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // ===== Global Variables =====
+  let activeServer = 0; // 0 = none, 1 = Big/Small, 2 = Premium Code, 3 = AI
+  let previousResults = [];
+  const MAX_HISTORY = 100;
+  let countdownInterval;
+  let lastPublishedTime = 0;
+  
+  // Cooldown variables
+  let serverCooldowns = {
+    1: 0, // Cooldown end time for server 1
+    2: 0, // Cooldown end time for server 2
+    3: 0  // Cooldown end time for server 3
+  };
+  let cooldownInterval;
+
+  // ===== Server Control Functions =====
+  function activateServer(serverNumber) {
+    if (activeServer === serverNumber) {
+      // If clicking the same server, deactivate it
+      deactivateServer(serverNumber);
+      return;
+    }
+    
+    // Check if server is in cooldown
+    if (isServerInCooldown(serverNumber)) {
+      return;
+    }
+    
+    // Deactivate current server first
+    if (activeServer > 0) {
+      deactivateServer(activeServer);
+    }
+    
+    // Activate new server
+    activeServer = serverNumber;
+    
+    const btn = document.getElementById(`server${serverNumber}-btn`);
+    const indicator = document.getElementById(`server${serverNumber}-indicator`);
+    const status = document.getElementById(`server${serverNumber}-status`);
+    
+    btn.classList.add('active');
+    indicator.classList.add('active');
+    status.textContent = 'ACTIVE';
+    
+    // Update active server status display
+    const activeStatus = document.getElementById('active-server-status');
+    const activeIndicator = activeStatus.querySelector('.status-indicator');
+    const activeText = activeStatus.querySelector('span');
+    
+    activeIndicator.classList.add('active');
+    
+    let serverName = '';
+    switch(serverNumber) {
+      case 1:
+        serverName = 'Results Big/Small Prediction Server';
+        break;
+      case 2:
+        serverName = 'Premium Code Prediction Server';
+        break;
+      case 3:
+        serverName = 'AI Prediction Server';
+        break;
+    }
+    activeText.textContent = serverName;
+    
+    // Start cooldown for the other servers
+    for (let i = 1; i <= 3; i++) {
+      if (i !== serverNumber) {
+        startCooldown(i);
+      }
+    }
+    
+    // Update prediction display
+    updatePredictionDisplay();
+    updateCKPredictionDisplay();
+  }
+
+  function deactivateServer(serverNumber) {
+    const btn = document.getElementById(`server${serverNumber}-btn`);
+    const indicator = document.getElementById(`server${serverNumber}-indicator`);
+    const status = document.getElementById(`server${serverNumber}-status`);
+    
+    btn.classList.remove('active');
+    indicator.classList.remove('active');
+    status.textContent = 'OFF';
+    
+    activeServer = 0;
+    
+    // Update active server status display
+    const activeStatus = document.getElementById('active-server-status');
+    const activeIndicator = activeStatus.querySelector('.status-indicator');
+    const activeText = activeStatus.querySelector('span');
+    
+    activeIndicator.classList.remove('active');
+    activeText.textContent = 'No server active';
+    
+    // Update prediction display
+    document.getElementById('prediction-value').textContent = 'SELECT SERVER';
+    updateCKPredictionDisplay();
+  }
+
+  // ===== Cooldown System =====
+  function startCooldown(serverNumber) {
+    // Set cooldown for 10 minutes (600 seconds)
+    const cooldownDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
+    serverCooldowns[serverNumber] = Date.now() + cooldownDuration;
+    
+    const cooldownOverlay = document.getElementById(`server${serverNumber}-cooldown`);
+    const cooldownTimer = document.getElementById(`server${serverNumber}-timer`);
+    const btn = document.getElementById(`server${serverNumber}-btn`);
+    
+    // Show cooldown overlay
+    cooldownOverlay.style.display = 'flex';
+    btn.disabled = true;
+    
+    // Start cooldown countdown
+    updateCooldownDisplay(serverNumber);
+    
+    // Start cooldown interval if not already running
+    if (!cooldownInterval) {
+      cooldownInterval = setInterval(updateAllCooldowns, 1000);
+    }
+  }
+
+  function updateAllCooldowns() {
+    let activeCooldowns = false;
+    
+    // Update cooldown for all servers
+    for (let serverNumber of [1, 2, 3]) {
+      if (isServerInCooldown(serverNumber)) {
+        updateCooldownDisplay(serverNumber);
+        activeCooldowns = true;
+      } else {
+        // Cooldown finished
+        const cooldownOverlay = document.getElementById(`server${serverNumber}-cooldown`);
+        const btn = document.getElementById(`server${serverNumber}-btn`);
+        
+        if (cooldownOverlay.style.display !== 'none') {
+          cooldownOverlay.style.display = 'none';
+          btn.disabled = false;
+        }
+      }
+    }
+    
+    // Stop interval if no active cooldowns
+    if (!activeCooldowns && cooldownInterval) {
+      clearInterval(cooldownInterval);
+      cooldownInterval = null;
+    }
+  }
+
+  function updateCooldownDisplay(serverNumber) {
+    const remainingTime = serverCooldowns[serverNumber] - Date.now();
+    
+    if (remainingTime <= 0) {
+      // Cooldown finished
+      serverCooldowns[serverNumber] = 0;
+      return;
+    }
+    
+    // Calculate minutes and seconds
+    const minutes = Math.floor(remainingTime / 60000);
+    const seconds = Math.floor((remainingTime % 60000) / 1000);
+    
+    // Update timer display
+    const cooldownTimer = document.getElementById(`server${serverNumber}-timer`);
+    cooldownTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function isServerInCooldown(serverNumber) {
+    return serverCooldowns[serverNumber] > Date.now();
+  }
+
+  // ===== Firebase Subscription =====
+  const ref = db.ref("bigwin/default");
+  
+  // Show loading state
+  const tbody = document.getElementById("tbody");
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="5" class="loading">
+        <div class="spinner"></div>
+        <span>Loading data...</span>
+      </td>
+    </tr>
+  `;
+
+  // Function to determine Big or Small based on number
+  function getBigSmall(number) {
+    if (!number || number.length === 0) return '';
+    
+    // Get the last digit of the number
+    const lastDigit = parseInt(number.toString().slice(-1));
+    
+    if (isNaN(lastDigit)) return '';
+    
+    // 01234 = Small, 56789 = Big
+    if (lastDigit >= 0 && lastDigit <= 4) {
+      return 'SMALL';
+    } else if (lastDigit >= 5 && lastDigit <= 9) {
+      return 'BIG';
+    }
+    
+    return '';
+  }
+
+  // ===== Prediction System 1: Big/Small Pattern Analysis =====
+  function bigSmallPredictionSystem(results) {
+    if (results.length < 3) {
+      return {
+        prediction: Math.random() > 0.5 ? 'BIG' : 'SMALL',
+        stats: {
+          total: results.length,
+          big: results.filter(r => r.bigSmall === 'BIG').length,
+          small: results.filter(r => r.bigSmall === 'SMALL').length
+        }
+      };
+    }
+
+    // Analyze patterns
+    const analysis = analyzePatterns(results);
+    
+    // Make prediction based on strongest pattern
+    const prediction = makeBigSmallPrediction(analysis);
+    
+    return prediction;
+  }
+
+  function analyzePatterns(results) {
+    const analysis = {
+      total: results.length,
+      bigCount: 0,
+      smallCount: 0,
+      streaks: [],
+      recentPattern: [],
+      alternations: 0,
+      lastFive: [],
+      sequencePattern: ''
+    };
+
+    let currentStreak = { type: results[0].bigSmall, length: 1 };
+    analysis.streaks.push(currentStreak);
+
+    for (let i = 0; i < results.length; i++) {
+      const current = results[i].bigSmall;
+      
+      // Count totals
+      if (current === 'BIG') analysis.bigCount++;
+      if (current === 'SMALL') analysis.smallCount++;
+      
+      // Track streaks
+      if (i > 0) {
+        if (current === results[i-1].bigSmall) {
+          currentStreak.length++;
+        } else {
+          currentStreak = { type: current, length: 1 };
+          analysis.streaks.push(currentStreak);
+          analysis.alternations++;
+        }
+      }
+      
+      // Recent patterns
+      if (i < 10) analysis.recentPattern.push(current);
+      if (i < 5) analysis.lastFive.push(current);
+    }
+
+    // Analyze sequence pattern
+    analysis.sequencePattern = detectSequencePattern(analysis.recentPattern);
+    
+    return analysis;
+  }
+
+  function detectSequencePattern(pattern) {
+    if (pattern.length < 3) return 'RANDOM';
+    
+    // Check for alternating pattern
+    let isAlternating = true;
+    for (let i = 1; i < pattern.length; i++) {
+      if (pattern[i] === pattern[i-1]) {
+        isAlternating = false;
+        break;
+      }
+    }
+    if (isAlternating) return 'ALTERNATING';
+    
+    // Check for streak pattern
+    let maxStreak = 1;
+    let currentStreak = 1;
+    for (let i = 1; i < pattern.length; i++) {
+      if (pattern[i] === pattern[i-1]) {
+        currentStreak++;
+        maxStreak = Math.max(maxStreak, currentStreak);
+      } else {
+        currentStreak = 1;
+      }
+    }
+    if (maxStreak >= 3) return 'STREAK';
+    
+    return 'RANDOM';
+  }
+
+  function makeBigSmallPrediction(analysis) {
+    const predictions = [];
+    const weights = [];
+    
+    // Strategy 1: Break long streaks (high priority)
+    const currentStreak = analysis.streaks[analysis.streaks.length - 1];
+    if (currentStreak.length >= 3) {
+      predictions.push(currentStreak.type === 'BIG' ? 'SMALL' : 'BIG');
+      weights.push(0.4 + (currentStreak.length * 0.1));
+    }
+    
+    // Strategy 2: Balance correction
+    const bigRatio = analysis.bigCount / analysis.total;
+    const smallRatio = analysis.smallCount / analysis.total;
+    
+    if (bigRatio > 0.6) {
+      predictions.push('SMALL');
+      weights.push(0.3);
+    } else if (smallRatio > 0.6) {
+      predictions.push('BIG');
+      weights.push(0.3);
+    }
+    
+    // Strategy 3: Pattern following
+    if (analysis.sequencePattern === 'ALTERNATING') {
+      const lastResult = analysis.recentPattern[0];
+      predictions.push(lastResult === 'BIG' ? 'SMALL' : 'BIG');
+      weights.push(0.25);
+    } else if (analysis.sequencePattern === 'STREAK') {
+      predictions.push(currentStreak.type);
+      weights.push(0.2);
+    }
+    
+    // Strategy 4: Recent trend (last 5)
+    const lastFiveBig = analysis.lastFive.filter(x => x === 'BIG').length;
+    const lastFiveSmall = analysis.lastFive.filter(x => x === 'SMALL').length;
+    
+    if (lastFiveBig >= 4) {
+      predictions.push('SMALL');
+      weights.push(0.15);
+    } else if (lastFiveSmall >= 4) {
+      predictions.push('BIG');
+      weights.push(0.15);
+    }
+    
+    // Strategy 5: If no strong signals, use probability with historical bias
+    if (predictions.length === 0) {
+      const randomValue = Math.random();
+      const prediction = randomValue < bigRatio ? 'BIG' : 'SMALL';
+      predictions.push(prediction);
+      weights.push(0.1);
+    }
+    
+    // Calculate weighted prediction
+    let bigScore = 0;
+    let smallScore = 0;
+    
+    for (let i = 0; i < predictions.length; i++) {
+      if (predictions[i] === 'BIG') {
+        bigScore += weights[i];
+      } else {
+        smallScore += weights[i];
+      }
+    }
+    
+    // Determine final prediction
+    let finalPrediction;
+    
+    if (bigScore > smallScore) {
+      finalPrediction = 'BIG';
+    } else {
+      finalPrediction = 'SMALL';
+    }
+    
+    return {
+      prediction: finalPrediction,
+      stats: {
+        total: analysis.total,
+        big: analysis.bigCount,
+        small: analysis.smallCount
+      }
+    };
+  }
+
+  // ===== Prediction System 2: Premium Code Analysis =====
+  function premiumCodePredictionSystem(results) {
+    if (results.length < 3) {
+      return {
+        prediction: Math.random() > 0.5 ? 'BIG' : 'SMALL',
+        stats: {
+          total: results.length,
+          big: results.filter(r => r.bigSmall === 'BIG').length,
+          small: results.filter(r => r.bigSmall === 'SMALL').length
+        }
+      };
+    }
+
+    // Premium code analysis
+    const analysis = analyzePremiumCodes(results);
+    
+    // Make prediction based on premium patterns
+    const prediction = makePremiumPrediction(analysis);
+    
+    return prediction;
+  }
+
+  function analyzePremiumCodes(results) {
+    const analysis = {
+      total: results.length,
+      bigCount: 0,
+      smallCount: 0,
+      premiumPatterns: [],
+      numberFrequencies: {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+      colorPatterns: {red: 0, green: 0}
+    };
+
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i];
+      
+      // Count totals
+      if (result.bigSmall === 'BIG') analysis.bigCount++;
+      if (result.bigSmall === 'SMALL') analysis.smallCount++;
+      
+      // Analyze number frequencies
+      const lastDigit = parseInt(result.number.toString().slice(-1));
+      if (!isNaN(lastDigit)) {
+        analysis.numberFrequencies[lastDigit]++;
+      }
+      
+      // Analyze color patterns
+      if (result.colour) {
+        analysis.colorPatterns[result.colour.toLowerCase()]++;
+      }
+      
+      // Premium code pattern analysis
+      if (i < 10) {
+        analysis.premiumPatterns.push({
+          number: result.number,
+          color: result.colour,
+          bigSmall: result.bigSmall,
+          premium: result.premium
+        });
+      }
+    }
+
+    return analysis;
+  }
+
+  function makePremiumPrediction(analysis) {
+    const factors = [];
+    
+    // Factor 1: Premium Code Correlation
+    const premiumFactor = analyzePremiumCorrelation(analysis.premiumPatterns);
+    if (premiumFactor === 'Premium-BIG Bias') factors.push('BIG');
+    if (premiumFactor === 'Premium-SMALL Bias') factors.push('SMALL');
+    
+    // Factor 2: Number Sequence
+    const sequenceFactor = analyzeNumberSequence(analysis.numberFrequencies);
+    if (sequenceFactor === 'Small Digit Dominance') factors.push('SMALL');
+    if (sequenceFactor === 'Big Digit Dominance') factors.push('BIG');
+    
+    // Factor 3: Historical Balance
+    const bigRatio = analysis.bigCount / analysis.total;
+    if (bigRatio > 0.6) factors.push('SMALL');
+    if (bigRatio < 0.4) factors.push('BIG');
+    
+    // Factor 4: Recent Trend (last 5)
+    const recentBig = analysis.premiumPatterns.slice(0, 5).filter(p => p.bigSmall === 'BIG').length;
+    if (recentBig >= 4) factors.push('SMALL');
+    if (recentBig <= 1) factors.push('BIG');
+    
+    // Decision
+    let bigVotes = factors.filter(f => f === 'BIG').length;
+    let smallVotes = factors.filter(f => f === 'SMALL').length;
+    
+    let finalPrediction;
+    if (bigVotes > smallVotes) {
+      finalPrediction = 'BIG';
+    } else if (smallVotes > bigVotes) {
+      finalPrediction = 'SMALL';
+    } else {
+      // If equal, use weighted random
+      finalPrediction = Math.random() > 0.5 ? 'BIG' : 'SMALL';
+    }
+    
+    return {
+      prediction: finalPrediction,
+      stats: {
+        total: analysis.total,
+        big: analysis.bigCount,
+        small: analysis.smallCount
+      }
+    };
+  }
+
+  // ===== Prediction System 3: AI Prediction System =====
+  function aiPredictionSystem(results) {
+    if (results.length < 5) {
+      return {
+        prediction: Math.random() > 0.5 ? 'BIG' : 'SMALL',
+        stats: {
+          total: results.length,
+          big: results.filter(r => r.bigSmall === 'BIG').length,
+          small: results.filter(r => r.bigSmall === 'SMALL').length
+        }
+      };
+    }
+
+    // Advanced AI analysis combining both patterns and premium codes
+    const analysis = performAIAnalysis(results);
+    
+    // Make AI-powered prediction
+    const prediction = makeAIPrediction(analysis);
+    
+    return prediction;
+  }
+
+  function performAIAnalysis(results) {
+    return {
+      patternAnalysis: analyzePatterns(results),
+      premiumAnalysis: analyzePremiumCodes(results)
+    };
+  }
+
+  function makeAIPrediction(analysis) {
+    // Combine both prediction systems with AI weighting
+    const bigSmallPrediction = makeBigSmallPrediction(analysis.patternAnalysis);
+    const premiumPrediction = makePremiumPrediction(analysis.premiumAnalysis);
+    
+    // AI decision: give more weight to the system with stronger patterns
+    const patternStrength = calculatePatternStrength(analysis.patternAnalysis);
+    const premiumStrength = calculatePremiumStrength(analysis.premiumAnalysis);
+    
+    let finalPrediction;
+    if (patternStrength > premiumStrength) {
+      finalPrediction = bigSmallPrediction.prediction;
+    } else if (premiumStrength > patternStrength) {
+      finalPrediction = premiumPrediction.prediction;
+    } else {
+      // If equal strength, use the pattern prediction
+      finalPrediction = bigSmallPrediction.prediction;
+    }
+    
+    return {
+      prediction: finalPrediction,
+      stats: {
+        total: analysis.patternAnalysis.total,
+        big: analysis.patternAnalysis.bigCount,
+        small: analysis.patternAnalysis.smallCount
+      }
+    };
+  }
+
+  function calculatePatternStrength(analysis) {
+    let strength = 0;
+    if (analysis.sequencePattern !== 'RANDOM') strength += 0.3;
+    const currentStreak = analysis.streaks[analysis.streaks.length - 1];
+    if (currentStreak.length >= 3) strength += 0.4;
+    const imbalance = Math.abs(analysis.bigCount - analysis.smallCount) / analysis.total;
+    strength += imbalance * 0.3;
+    return strength;
+  }
+
+  function calculatePremiumStrength(analysis) {
+    let strength = 0;
+    const premiumCorrelation = analyzePremiumCorrelation(analysis.premiumPatterns);
+    if (premiumCorrelation.includes('Bias')) strength += 0.4;
+    const sequenceFactor = analyzeNumberSequence(analysis.numberFrequencies);
+    if (sequenceFactor.includes('Dominance')) strength += 0.3;
+    const colorInfluence = analyzeColorInfluence(analysis.colorPatterns);
+    if (colorInfluence.includes('Bias')) strength += 0.2;
+    return strength;
+  }
+
+  // ===== Common Helper Functions =====
+  function analyzePremiumCorrelation(patterns) {
+    if (patterns.length < 5) return 'Collecting Data';
+    
+    let premiumBig = 0;
+    let premiumSmall = 0;
+    
+    patterns.forEach(pattern => {
+      if (pattern.premium && pattern.bigSmall === 'BIG') premiumBig++;
+      if (pattern.premium && pattern.bigSmall === 'SMALL') premiumSmall++;
+    });
+    
+    if (premiumBig > premiumSmall * 2) return 'Premium-BIG Bias';
+    if (premiumSmall > premiumBig * 2) return 'Premium-SMALL Bias';
+    return 'Balanced Premium';
+  }
+
+  function analyzeNumberSequence(frequencies) {
+    const smallDigits = [0,1,2,3,4].reduce((sum, digit) => sum + frequencies[digit], 0);
+    const bigDigits = [5,6,7,8,9].reduce((sum, digit) => sum + frequencies[digit], 0);
+    
+    if (smallDigits > bigDigits * 1.5) return 'Small Digit Dominance';
+    if (bigDigits > smallDigits * 1.5) return 'Big Digit Dominance';
+    return 'Balanced Digits';
+  }
+
+  function analyzeColorInfluence(colors) {
+    const totalColors = colors.red + colors.green;
+    if (totalColors === 0) return 'No Color Data';
+    
+    const redRatio = colors.red / totalColors;
+    const greenRatio = colors.green / totalColors;
+    
+    if (redRatio > 0.7) return 'Red Color Bias';
+    if (greenRatio > 0.7) return 'Green Color Bias';
+    return 'Color Balanced';
+  }
+
+  // ===== Common Functions =====
+  function updatePredictionDisplay() {
+    if (activeServer === 0 || previousResults.length === 0) return;
+    
+    let predictionAnalysis;
+    
+    switch(activeServer) {
+      case 1:
+        predictionAnalysis = bigSmallPredictionSystem(previousResults);
+        break;
+      case 2:
+        predictionAnalysis = premiumCodePredictionSystem(previousResults);
+        break;
+      case 3:
+        predictionAnalysis = aiPredictionSystem(previousResults);
+        break;
+    }
+    
+    const predictionValue = document.getElementById('prediction-value');
+    predictionValue.textContent = predictionAnalysis.prediction;
+    predictionValue.className = predictionAnalysis.prediction === 'BIG' ? 
+      'prediction-result prediction-big' : 'prediction-result prediction-small';
+    
+    // Update Big/Small bars for all servers
+    updateBigSmallBars(predictionAnalysis.stats);
+  }
+
+  function updateCKPredictionDisplay() {
+    const ckPredictionValue = document.getElementById('ck-prediction-value');
+    const ckNextIssue = document.getElementById('ck-next-issue');
+    
+    if (activeServer === 0 || previousResults.length === 0) {
+      ckPredictionValue.textContent = 'SELECT SERVER';
+      ckNextIssue.textContent = '-';
+      return;
+    }
+    
+    let predictionAnalysis;
+    
+    switch(activeServer) {
+      case 1:
+        predictionAnalysis = bigSmallPredictionSystem(previousResults);
+        break;
+      case 2:
+        predictionAnalysis = premiumCodePredictionSystem(previousResults);
+        break;
+      case 3:
+        predictionAnalysis = aiPredictionSystem(previousResults);
+        break;
+    }
+    
+    ckPredictionValue.textContent = predictionAnalysis.prediction;
+    ckPredictionValue.className = predictionAnalysis.prediction === 'BIG' ? 
+      'prediction-result prediction-big' : 'prediction-result prediction-small';
+    
+    // Update next issue
+    if (previousResults.length > 0) {
+      const nextIssueNumber = getNextIssueNumber(previousResults[0].issueNumber);
+      ckNextIssue.textContent = nextIssueNumber;
+    }
+  }
+
+  // Function to generate next issue number
+  function getNextIssueNumber(currentIssue) {
+    if (!currentIssue) return '';
+    
+    try {
+      const currentStr = currentIssue.toString();
+      const nextNum = BigInt(currentStr) + BigInt(1);
+      return nextNum.toString();
+    } catch (e) {
+      console.error("Error generating next issue number:", e);
+      return '';
+    }
+  }
+
+  // Circular countdown timer function
+  function startCountdown() {
+    let timeLeft = 30;
+    const countdownTime = document.getElementById('countdown-time');
+    const countdownProgress = document.getElementById('countdown-progress');
+    const circumference = 2 * Math.PI * 54;
+    
+    // Clear existing interval
+    if (countdownInterval) {
+      clearInterval(countdownInterval);
+    }
+    
+    // Reset progress circle
+    countdownProgress.style.strokeDashoffset = 0;
+    
+    countdownInterval = setInterval(() => {
+      timeLeft--;
+      countdownTime.textContent = `${timeLeft}s`;
+      
+      // Update circular progress
+      const progress = (timeLeft / 30) * circumference;
+      countdownProgress.style.strokeDashoffset = progress;
+      
+      if (timeLeft <= 0) {
+        clearInterval(countdownInterval);
+        countdownTime.textContent = '0s';
+        countdownProgress.style.strokeDashoffset = circumference;
+      }
+    }, 1000);
+  }
+
+  // Update Big/Small bars
+  function updateBigSmallBars(stats) {
+    const bigFill = document.getElementById('big-fill');
+    const smallFill = document.getElementById('small-fill');
+    const bigCount = document.getElementById('big-count');
+    const smallCount = document.getElementById('small-count');
+    
+    const bigPercentage = (stats.big / stats.total) * 100;
+    const smallPercentage = (stats.small / stats.total) * 100;
+    
+    // Update bars with animation
+    setTimeout(() => {
+      bigFill.style.width = `${bigPercentage}%`;
+      smallFill.style.width = `${smallPercentage}%`;
+    }, 100);
+    
+    // Update counts
+    bigCount.textContent = `${stats.big} (${bigPercentage.toFixed(1)}%)`;
+    smallCount.textContent = `${stats.small} (${smallPercentage.toFixed(1)}%)`;
+  }
+  
+  // ===== Firebase Event Listener =====
+  ref.on("value", (snap) => {
+    const v = snap.val();
+    
+    if (!v) {
+      document.getElementById("meta").textContent = "No data available from broadcaster";
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="no-data">No data available</td>
+        </tr>
+      `;
+      document.getElementById("prediction-value").textContent = "NO DATA";
+      return;
+    }
+
+    // Check if new data arrived
+    const currentPublishedTime = new Date(v.publishedAt).getTime();
+    if (currentPublishedTime > lastPublishedTime) {
+      lastPublishedTime = currentPublishedTime;
+      startCountdown();
+    }
+
+    // Update status information
+    const metaText = `Server: ${v.serviceNowTime} | Status: ${v.msg} (${v.code})`;
+    document.getElementById("meta").textContent = metaText;
+
+    // Update table data
+    if (v.list && v.list.length > 0) {
+      tbody.innerHTML = "";
+      
+      // Sort list by issue number (newest first)
+      const sortedList = [...v.list].sort((a, b) => {
+        return b.issueNumber - a.issueNumber;
+      });
+      
+      // Update previous results for prediction
+      previousResults = sortedList.map(item => {
+        return {
+          issueNumber: item.issueNumber,
+          number: item.number,
+          colour: item.colour,
+          bigSmall: getBigSmall(item.number),
+          premium: item.premium
+        };
+      }).slice(0, MAX_HISTORY);
+      
+      // Update next issue number
+      const nextIssueNumber = getNextIssueNumber(sortedList[0].issueNumber);
+      document.getElementById("next-issue").textContent = nextIssueNumber;
+      
+      // Update prediction if server is active
+      updatePredictionDisplay();
+      updateCKPredictionDisplay();
+      
+      // Display all results
+      sortedList.forEach(item => {
+        const bigSmall = getBigSmall(item.number);
+        const bigSmallClass = bigSmall === 'BIG' ? 'big' : 'small';
+        
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.issueNumber}</td>
+          <td>${item.number}</td>
+          <td class="${item.colour}">${item.colour}</td>
+          <td class="${bigSmallClass}">${bigSmall}</td>
+          <td>${item.premium}</td>`;
+        tbody.appendChild(tr);
+      });
+    } else {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="no-data">No data available</td>
+        </tr>
+      `;
+      document.getElementById("prediction-value").textContent = "NO DATA";
+    }
+  });
+
+  // Start initial countdown and check for existing cooldowns
+  startCountdown();
+  updateAllCooldowns();
+  </script>
+</body>
+</html>
