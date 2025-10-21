@@ -1079,33 +1079,28 @@
 
       <!-- CK Lottery Section - FIXED -->
       <div id="cklottery-section" class="content-section">
-        <div class="iframe-container" id="iframe-container">
-          <!-- Fixed iframe with proper attributes -->
-          <iframe src="https://www.cklottery.info/#/register?invitationCode=81487219676" 
-                  class="ck-lottery-container" 
-                  id="ck-lottery-frame"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
-                  allow="fullscreen"
-                  loading="eager">
-          </iframe>
-        </div>
-        
-        <!-- Alternative CK Lottery Access -->
-        <div class="ck-alternative" id="ck-alternative" style="display: none;">
-          <h3><i class="fas fa-exclamation-triangle"></i> CK Lottery Access</h3>
-          <p>If the CK Lottery website is not loading, please use one of the following options:</p>
-          <div style="margin: 15px 0;">
-            <a href="http://www.cklottery.info/#/register?invitationCode=81487219676" target="_blank" class="ck-link-button">
-              <i class="fas fa-external-link-alt"></i> Open CK Lottery in New Tab
-            </a>
-            <a href="https://cklottery.info" target="_blank" class="ck-link-button">
-              <i class="fas fa-home"></i> CK Lottery Homepage
+        <!-- Alternative CK Lottery Access - Always show this instead of iframe -->
+        <div class="ck-alternative">
+          <h3><i class="fas fa-external-link-alt"></i> CK LOTTERY ACCESS</h3>
+          <p>For the best experience, open CK Lottery in a new tab:</p>
+          <div style="margin: 20px 0;">
+            <a href="https://www.cklottery.info/#/register?invitationCode=81487219676" target="_blank" class="ck-link-button">
+              <i class="fas fa-external-link-alt"></i> OPEN CK LOTTERY
             </a>
           </div>
-          <p style="font-size: 12px; color: #a0a0a0; margin-top: 10px;">
-            <i class="fas fa-info-circle"></i> Some browsers block embedded content for security reasons.
-          </p>
+          <div style="background: rgba(233, 185, 73, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+            <h4 style="color: #e9b949; margin-bottom: 10px;"><i class="fas fa-info-circle"></i> Why this solution?</h4>
+            <p style="font-size: 12px; color: #a0a0a0; text-align: left;">
+              GitHub Pages blocks embedded websites for security reasons. This direct link ensures you get the full CK Lottery experience without any restrictions.
+            </p>
+          </div>
         </div>
+        
+        <!-- Hidden iframe for compatibility -->
+        <iframe src="https://www.cklottery.info/#/register?invitationCode=81487219676" 
+                style="display: none;"
+                id="hidden-iframe">
+        </iframe>
       </div>
     </div>
   </div>
@@ -1219,28 +1214,6 @@
     // If session is active, show success content
     document.getElementById('key-success-content').style.display = 'block';
     startSession();
-  }
-
-  // ===== CK Lottery Frame Detection =====
-  function checkCKFrame() {
-    const frame = document.getElementById('ck-lottery-frame');
-    const alternative = document.getElementById('ck-alternative');
-    
-    // Check if frame is loaded properly
-    setTimeout(() => {
-      try {
-        // Try to access frame content (this will fail if blocked)
-        const frameDoc = frame.contentDocument || frame.contentWindow.document;
-        if (!frameDoc || frameDoc.readyState === 'complete') {
-          // Frame loaded successfully
-          alternative.style.display = 'none';
-        }
-      } catch (e) {
-        // Frame is blocked, show alternative
-        frame.style.display = 'none';
-        alternative.style.display = 'block';
-      }
-    }, 3000);
   }
 
   // ===== Prediction System =====
@@ -1380,17 +1353,6 @@
     // Update CK Lottery prediction display if needed
     if (sectionName === 'cklottery') {
       updateCKPredictionDisplay();
-      // Enable scrolling for CK Lottery section
-      document.body.style.overflow = 'auto';
-      
-      // Check if CK frame is working
-      checkCKFrame();
-      
-      // Don't reload the iframe when switching to CK Lottery section
-      // This prevents the refresh issue
-    } else {
-      // Enable scrolling for other sections
-      document.body.style.overflow = 'auto';
     }
   }
 
@@ -1820,7 +1782,7 @@
       bigCount: 0,
       smallCount: 0,
       premiumPatterns: [],
-      numberFrequencies: {0:0,1:2,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+      numberFrequencies: {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
       colorPatterns: {red: 0, green: 0}
     };
 
@@ -2150,4 +2112,3 @@
   </script>
 </body>
 </html>
-
