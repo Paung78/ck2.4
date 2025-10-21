@@ -524,7 +524,7 @@
       to { transform: rotate(360deg); }
     }
     
-    /* CK Lottery Website Styles */
+    /* CK Lottery Website Styles - FIXED */
     .ck-lottery-container {
       width: 100%;
       height: 100%;
@@ -535,7 +535,7 @@
     
     .iframe-container {
       position: relative;
-      height: 100%;
+      height: 100vh; /* Changed to 100vh to show full website without scrolling */
       width: 100%;
       margin-top: 80px; /* Space for external controls */
     }
@@ -739,12 +739,16 @@
       </div>
     </div>
 
-    <!-- CK Lottery Section -->
+    <!-- CK Lottery Section - FIXED -->
     <div id="cklottery-section" class="content-section">
       <div class="iframe-container">
-        <iframe src="https://www.cklottery.info/#/register?invitationCode=81487219676" 
+        <!-- Fixed iframe with proper attributes -->
+        <iframe src="http://www.cklottery.info/#/register?invitationCode=81487219676" 
                 class="ck-lottery-container" 
-                id="ck-lottery-frame">
+                id="ck-lottery-frame"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                allow="fullscreen"
+                loading="eager">
         </iframe>
       </div>
     </div>
@@ -774,6 +778,9 @@
     // Update CK Lottery prediction display if needed
     if (sectionName === 'cklottery') {
       updateCKPredictionDisplay();
+      // Force iframe to reload when switching to CK Lottery section
+      const iframe = document.getElementById('ck-lottery-frame');
+      iframe.src = iframe.src; // This will reload the iframe
     }
   }
 
@@ -1617,5 +1624,4 @@
   updateAllCooldowns();
   </script>
 </body>
-
 </html>
