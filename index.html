@@ -3,18 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIGWIN Viewer</title>
+  <title>Lottery Tricks Ai Perdition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
   <style>
     :root {
-      --primary-color: #2c3e50;
-      --secondary-color: #3498db;
+      --primary-color: #1a1a2e;
+      --secondary-color: #16213e;
+      --accent-color: #0f3460;
+      --gold-color: #e9b949;
+      --silver-color: #c0c0c0;
       --success-color: #27ae60;
       --danger-color: #e74c3c;
       --warning-color: #f39c12;
-      --purple-color: #9b59b6;
-      --teal-color: #1abc9c;
       --light-gray: #f5f5f5;
-      --border-color: #e0e0e0;
+      --border-color: #2d3748;
     }
     
     * {
@@ -24,10 +29,10 @@
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Inter', sans-serif;
       line-height: 1.4;
-      color: #333;
-      background-color: #f9f9f9;
+      color: #fff;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       padding: 0;
       max-width: 100%;
       margin: 0 auto;
@@ -35,14 +40,222 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Key Activation Page Styles */
+    #key-activation-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    }
+    
+    .key-container {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(26, 26, 46, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      position: relative;
+      border: 1px solid rgba(233, 185, 73, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .logo {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #e9b949, #d4af37);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      font-size: 36px;
+      color: var(--primary-color);
+      box-shadow: 0 5px 15px rgba(233, 185, 73, 0.4);
+      position: relative;
       overflow: hidden;
+    }
+    
+    .logo::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(45deg);
+    }
+    
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5px;
+      background: linear-gradient(to right, #e9b949, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      font-size: 14px;
+      color: #a0a0a0;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #e9b949;
+    }
+    
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(233, 185, 73, 0.3);
+      border-radius: 10px;
+      font-size: 15px;
+      transition: all 0.2s;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #e9b949;
+      box-shadow: 0 0 0 3px rgba(233, 185, 73, 0.2);
+    }
+    
+    input::placeholder {
+      color: #a0a0a0;
+    }
+    
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #e9b949, #d4af37);
+      color: #1a1a2e;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(233, 185, 73, 0.3);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(233, 185, 73, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    #timer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+      color: #e9b949;
+      padding: 12px;
+      background: rgba(233, 185, 73, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
+    }
+    
+    #key-success-content {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: rgba(233, 185, 73, 0.1);
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(233, 185, 73, 0.2);
+    }
+    
+    .success-icon {
+      color: #e9b949;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+    
+    .footer {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 12px;
+      color: #a0a0a0;
+    }
+    
+    .badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: linear-gradient(135deg, #e9b949, #d4af37);
+      color: #1a1a2e;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    /* Prediction Page Styles */
+    #prediction-page {
+      display: none;
     }
     
     .main-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      height: 100vh;
+    }
+    
+    /* Premium Header */
+    .premium-header {
+      background: rgba(26, 26, 46, 0.9);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid rgba(233, 185, 73, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .premium-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #e9b949, transparent);
+    }
+    
+    .premium-header h1 {
+      font-size: 20px;
+      margin-bottom: 5px;
+      background: linear-gradient(to right, #e9b949, #fff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .premium-header .subtitle {
+      font-size: 12px;
+      color: #a0a0a0;
     }
     
     /* External Controls - Placed above CK Lottery Website */
@@ -56,33 +269,36 @@
       flex-direction: column;
       gap: 5px;
       padding: 5px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(5px);
+      background: rgba(26, 26, 46, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(233, 185, 73, 0.3);
     }
     
     .prediction-overlay {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 4px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: rgba(15, 52, 96, 0.8);
+      padding: 8px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .prediction-overlay .prediction-box {
       flex: 1;
       margin-right: 4px;
-      padding: 4px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 4px;
+      padding: 8px;
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      border-radius: 8px;
       color: white;
       text-align: center;
       font-size: 10px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .prediction-overlay .prediction-result {
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
     }
     
@@ -91,12 +307,13 @@
       margin-bottom: 2px;
       font-size: 9px;
       opacity: 0.9;
+      color: #e9b949;
     }
     
     .issue-number {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(233, 185, 73, 0.2);
       padding: 2px 6px;
       border-radius: 10px;
       margin-bottom: 2px;
@@ -106,19 +323,20 @@
     .menu-container {
       display: flex;
       justify-content: center;
-      background-color: white;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background-color: rgba(15, 52, 96, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       overflow: hidden;
-      height: 35px;
+      height: 40px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .menu-btn {
       flex: 1;
       padding: 8px;
       border: none;
-      background-color: var(--primary-color);
-      color: white;
+      background-color: transparent;
+      color: #a0a0a0;
       font-weight: 600;
       font-size: 11px;
       cursor: pointer;
@@ -131,17 +349,17 @@
     }
     
     .menu-btn.active {
-      background-color: var(--secondary-color);
+      background: linear-gradient(135deg, #e9b949, #d4af37);
+      color: #1a1a2e;
     }
     
     .menu-btn:first-child {
-      border-right: 1px solid rgba(255, 255, 255, 0.2);
+      border-right: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .content-section {
       display: none;
-      height: 100vh;
-      overflow: auto;
+      width: 100%;
     }
     
     .content-section.active {
@@ -149,80 +367,68 @@
     }
     
     .container {
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      background: rgba(26, 26, 46, 0.8);
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       padding: 15px;
       margin-bottom: 15px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
+      backdrop-filter: blur(5px);
     }
     
     header {
       text-align: center;
       margin-bottom: 15px;
       padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-color);
-    }
-    
-    h1 {
-      color: var(--primary-color);
-      font-size: 20px;
-      margin-bottom: 5px;
-    }
-    
-    .subtitle {
-      color: #7f8c8d;
-      font-size: 12px;
+      border-bottom: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .status-card {
-      background-color: var(--light-gray);
-      border-radius: 6px;
-      padding: 10px;
+      background: rgba(15, 52, 96, 0.5);
+      border-radius: 10px;
+      padding: 12px;
       margin-bottom: 15px;
-      border-left: 4px solid var(--secondary-color);
+      border-left: 4px solid #e9b949;
       font-size: 12px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .status-title {
       font-weight: 600;
       margin-bottom: 5px;
-      color: var(--primary-color);
+      color: #e9b949;
       font-size: 13px;
     }
     
     .server-controls {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 10px;
       margin-bottom: 15px;
     }
     
-    @media (max-width: 768px) {
-      .server-controls {
-        grid-template-columns: 1fr;
-      }
-    }
-    
     .server-btn {
-      padding: 12px 6px;
+      padding: 15px 10px;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 11px;
+      font-size: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       text-align: center;
       position: relative;
       overflow: hidden;
-      min-height: 70px;
+      min-height: 80px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
     
     .server-btn.active {
-      box-shadow: 0 0 0 2px var(--success-color);
+      box-shadow: 0 0 0 2px #e9b949, 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
     }
     
     .server-btn:disabled {
@@ -255,8 +461,8 @@
     }
     
     .status-indicator {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: #e74c3c;
     }
@@ -276,13 +482,13 @@
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 600;
     }
     
     .cooldown-timer {
       background: rgba(255, 255, 255, 0.2);
-      padding: 2px 6px;
+      padding: 4px 8px;
       border-radius: 10px;
     }
     
@@ -293,7 +499,7 @@
     .section-title {
       font-weight: 600;
       margin-bottom: 10px;
-      color: var(--primary-color);
+      color: #e9b949;
       font-size: 14px;
       text-align: center;
     }
@@ -306,29 +512,33 @@
     }
     
     .prediction-box {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 8px;
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      border-radius: 12px;
       padding: 15px;
       color: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       text-align: center;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .prediction-big {
       color: #ffeb3b;
+      text-shadow: 0 0 5px rgba(255, 235, 59, 0.5);
     }
     
     .prediction-small {
       color: #4fc3f7;
+      text-shadow: 0 0 5px rgba(79, 195, 247, 0.5);
     }
     
     .countdown-box {
       background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
-      border-radius: 8px;
+      border-radius: 12px;
       padding: 15px;
       color: white;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       text-align: center;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .circular-countdown {
@@ -387,12 +597,12 @@
     }
     
     .stat-box {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       padding: 10px;
       text-align: center;
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .stat-label {
@@ -400,16 +610,18 @@
       margin-bottom: 5px;
       font-weight: 600;
       opacity: 0.9;
+      color: #e9b949;
     }
     
     .stat-bar {
       width: 100%;
       height: 16px;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       margin-bottom: 5px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .big-bar-fill {
@@ -444,17 +656,17 @@
     }
     
     .history-table thead {
-      background-color: var(--primary-color);
-      color: white;
+      background: linear-gradient(135deg, #0f3460, #16213e);
+      color: #e9b949;
       position: sticky;
       top: 0;
     }
     
     .history-table th, 
     .history-table td {
-      padding: 8px 6px;
+      padding: 10px 8px;
       text-align: left;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid rgba(233, 185, 73, 0.2);
     }
     
     .history-table th {
@@ -467,7 +679,7 @@
     }
     
     .history-table tbody tr:hover {
-      background-color: rgba(52, 152, 219, 0.05);
+      background-color: rgba(233, 185, 73, 0.1);
     }
     
     .history-table tbody tr:last-child td {
@@ -475,28 +687,28 @@
     }
     
     .red {
-      color: var(--danger-color);
+      color: #ff6b6b;
       font-weight: 600;
     }
     
     .green {
-      color: var(--success-color);
+      color: #1abc9c;
       font-weight: 600;
     }
     
     .big {
-      color: var(--warning-color);
+      color: #ffa726;
       font-weight: 700;
     }
     
     .small {
-      color: var(--secondary-color);
+      color: #4ecdc4;
       font-weight: 700;
     }
     
     .no-data {
       text-align: center;
-      color: #7f8c8d;
+      color: #a0a0a0;
       padding: 15px;
       font-style: italic;
       font-size: 12px;
@@ -513,9 +725,9 @@
     .spinner {
       width: 20px;
       height: 20px;
-      border: 2px solid rgba(52, 152, 219, 0.3);
+      border: 2px solid rgba(233, 185, 73, 0.3);
       border-radius: 50%;
-      border-top-color: var(--secondary-color);
+      border-top-color: #e9b949;
       animation: spin 1s ease-in-out infinite;
       margin-right: 8px;
     }
@@ -530,57 +742,68 @@
       height: 100%;
       border: none;
       border-radius: 0;
-      overflow: hidden;
+      overflow: auto;
     }
     
     .iframe-container {
-      position: relative;
-      height: 100vh; /* Changed to 100vh to show full website without scrolling */
+      position: fixed;
+      top: 120px;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100%;
-      margin-top: 80px; /* Space for external controls */
+      height: calc(100vh - 120px);
+      overflow: auto;
+      background: white;
     }
     
     /* Mobile optimizations */
     @media (max-width: 480px) {
       .external-controls {
-        padding: 3px;
+        padding: 5px;
       }
       
       .prediction-overlay {
-        padding: 3px;
+        padding: 6px;
       }
       
       .prediction-overlay .prediction-box {
-        padding: 3px;
-        margin-right: 3px;
-        font-size: 9px;
+        padding: 6px;
+        margin-right: 5px;
+        font-size: 10px;
       }
       
       .prediction-overlay .prediction-result {
-        font-size: 10px;
+        font-size: 11px;
       }
       
       .prediction-header {
-        font-size: 8px;
-        margin-bottom: 1px;
+        font-size: 9px;
+        margin-bottom: 2px;
       }
       
       .issue-number {
-        font-size: 9px;
-        padding: 1px 4px;
+        font-size: 10px;
+        padding: 2px 5px;
       }
       
       .menu-container {
-        height: 30px;
+        height: 35px;
       }
       
       .menu-btn {
-        padding: 6px;
-        font-size: 10px;
+        padding: 7px;
+        font-size: 11px;
       }
       
       .iframe-container {
-        margin-top: 70px; /* Smaller space for mobile */
+        top: 110px;
+        height: calc(100vh - 110px);
+      }
+      
+      .server-btn {
+        min-height: 70px;
+        padding: 12px 8px;
       }
     }
     
@@ -589,167 +812,252 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       margin-bottom: 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      border: 1px solid rgba(233, 185, 73, 0.2);
+    }
+    
+    /* Prediction section padding */
+    #prediction-section {
+      padding: 130px 15px 15px 15px;
+    }
+    
+    /* Premium Animations */
+    @keyframes glow {
+      0% { box-shadow: 0 0 5px rgba(233, 185, 73, 0.5); }
+      50% { box-shadow: 0 0 20px rgba(233, 185, 73, 0.8); }
+      100% { box-shadow: 0 0 5px rgba(233, 185, 73, 0.5); }
+    }
+    
+    .glow-effect {
+      animation: glow 2s infinite;
+    }
+    
+    /* Premium Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(26, 26, 46, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(233, 185, 73, 0.5);
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(233, 185, 73, 0.7);
     }
   </style>
 </head>
 <body>
-  <!-- External Controls - Placed above CK Lottery Website -->
-  <div class="external-controls">
-    <div class="prediction-overlay">
-      <div class="prediction-box">
-        <div class="prediction-header">Prediction Issue</div>
-        <div class="issue-number" id="ck-next-issue">-</div>
-        <div class="prediction-header">Prediction</div>
-        <div class="prediction-result" id="ck-prediction-value">SELECT SERVER</div>
+  <!-- Key Activation Page -->
+  <div id="key-activation-page">
+    <div class="key-container">
+      <div class="badge">PREMIUM</div>
+      
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-crown"></i>
+        </div>
+        <h1>Lottery Tricks Ai Perdition</h1>
+        <div class="subtitle">Premium Prediction System</div>
       </div>
-    </div>
-    
-    <div class="menu-container">
-      <button class="menu-btn active" id="prediction-btn" onclick="showSection('prediction')">Prediction</button>
-      <button class="menu-btn" id="cklottery-btn" onclick="showSection('cklottery')">CK Lottery</button>
+      
+      <div class="form-group">
+        <label for="keyInput"><i class="fas fa-key"></i> ACCESS KEY</label>
+        <input type="text" id="keyInput" placeholder="Enter your premium access key">
+      </div>
+      
+      <button onclick="activateKey()" class="glow-effect">
+        <i class="fas fa-lock-open"></i> ACTIVATE PREMIUM ACCESS
+      </button>
+      
+      <div id="timer"></div>
+      
+      <div id="key-success-content">
+        <div class="success-icon">
+          <i class="fas fa-gem"></i>
+        </div>
+        <div style="margin-bottom: 15px; font-weight: 500;">Premium Access Granted!</div>
+        <button onclick="showPredictionPage()" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+          <i class="fas fa-chart-line"></i> VIEW PREDICTIONS
+        </button>
+      </div>
+      
+      <div class="footer">CREDITS BY PYAUNGGYI | Lottery Tricks Ai Perdition</div>
     </div>
   </div>
 
-  <div class="main-content">
-    <!-- Prediction Section -->
-    <div id="prediction-section" class="content-section active">
-      <div class="container">
-        <header>
-          <h1>BIGWIN Viewer</h1>
-          <p class="subtitle">Real-time Lottery Data with AI Prediction</p>
-        </header>
-        
-        <div class="status-card">
-          <div class="status-title">Connection Status</div>
-          <div id="meta">Waiting for broadcaster...</div>
+  <!-- Prediction Page -->
+  <div id="prediction-page">
+    <!-- Premium Header -->
+    <div class="premium-header">
+      <h1>Lottery Tricks Ai Perdition</h1>
+      <div class="subtitle">Premium Real-time Lottery Forecasting</div>
+    </div>
+
+    <!-- External Controls - Placed above CK Lottery Website -->
+    <div class="external-controls">
+      <div class="prediction-overlay">
+        <div class="prediction-box">
+          <div class="prediction-header">PREDICTION ISSUE</div>
+          <div class="issue-number" id="ck-next-issue">-</div>
+          <div class="prediction-header">LUXE PREDICTION</div>
+          <div class="prediction-result" id="ck-prediction-value">SELECT SERVER</div>
         </div>
       </div>
-
-      <div class="container">
-        <div class="server-controls">
-          <button class="server-btn server-1" id="server1-btn" onclick="activateServer(1)">
-            Results Big/Small Prediction
-            <div class="server-status">
-              <div class="status-indicator" id="server1-indicator"></div>
-              <span id="server1-status">OFF</span>
-            </div>
-            <div class="cooldown-overlay" id="server1-cooldown" style="display: none;">
-              <div class="cooldown-timer" id="server1-timer">10:00</div>
-            </div>
-          </button>
-          
-          <button class="server-btn server-2" id="server2-btn" onclick="activateServer(2)">
-            Premium Code Prediction
-            <div class="server-status">
-              <div class="status-indicator" id="server2-indicator"></div>
-              <span id="server2-status">OFF</span>
-            </div>
-            <div class="cooldown-overlay" id="server2-cooldown" style="display: none;">
-              <div class="cooldown-timer" id="server2-timer">10:00</div>
-            </div>
-          </button>
-          
-          <button class="server-btn server-3" id="server3-btn" onclick="activateServer(3)">
-            AI Prediction Server
-            <div class="server-status">
-              <div class="status-indicator" id="server3-indicator"></div>
-              <span id="server3-status">OFF</span>
-            </div>
-            <div class="cooldown-overlay" id="server3-cooldown" style="display: none;">
-              <div class="cooldown-timer" id="server3-timer">10:00</div>
-            </div>
-          </button>
-        </div>
-
-        <div class="prediction-section">
-          <div class="section-title">Next Draw Prediction</div>
-          
-          <div class="prediction-container">
-            <div class="prediction-box">
-              <div class="prediction-header">Next Issue</div>
-              <div class="issue-number" id="next-issue">-</div>
-              <div class="prediction-header">Prediction</div>
-              <div class="prediction-result" id="prediction-value">SELECT SERVER</div>
-              <div class="server-status" id="active-server-status">
-                <div class="status-indicator"></div>
-                <span>No server active</span>
-              </div>
-            </div>
-            
-            <div class="countdown-box">
-              <div class="prediction-header">Next Draw In</div>
-              <div class="circular-countdown">
-                <svg class="countdown-circle" viewBox="0 0 120 120">
-                  <circle class="countdown-background" cx="60" cy="60" r="54"></circle>
-                  <circle class="countdown-progress" cx="60" cy="60" r="54" id="countdown-progress"></circle>
-                </svg>
-                <div class="countdown-text">
-                  <div class="countdown-time" id="countdown-time">30s</div>
-                  <div class="countdown-label">Remaining</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Big/Small Stats (All Servers) -->
-          <div class="stats-container">
-            <div class="stat-box">
-              <div class="stat-label">BIG COUNT</div>
-              <div class="stat-bar">
-                <div class="big-bar-fill" id="big-fill"></div>
-              </div>
-              <div class="stat-count" id="big-count">0 (0%)</div>
-            </div>
-            
-            <div class="stat-box">
-              <div class="stat-label">SMALL COUNT</div>
-              <div class="stat-bar">
-                <div class="small-bar-fill" id="small-fill"></div>
-              </div>
-              <div class="stat-count" id="small-count">0 (0%)</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="history-section">
-          <div class="section-title">Draw History</div>
-          <div class="table-container">
-            <table class="history-table">
-              <thead>
-                <tr>
-                  <th>Issue</th>
-                  <th>Number</th>
-                  <th>Color</th>
-                  <th>Big/Small</th>
-                  <th>Premium</th>
-                </tr>
-              </thead>
-              <tbody id="tbody">
-                <tr>
-                  <td colspan="5" class="no-data">No data available</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      
+      <div class="menu-container">
+        <button class="menu-btn active" id="prediction-btn" onclick="showSection('prediction')">
+          <i class="fas fa-chart-bar"></i> PREDICTION
+        </button>
+        <button class="menu-btn" id="cklottery-btn" onclick="showSection('cklottery')">
+          <i class="fas fa-globe"></i> CK LOTTERY
+        </button>
       </div>
     </div>
 
-    <!-- CK Lottery Section - FIXED -->
-    <div id="cklottery-section" class="content-section">
-      <div class="iframe-container">
-        <!-- Fixed iframe with proper attributes -->
-        <iframe src="http://www.cklottery.info/#/register?invitationCode=81487219676" 
-                class="ck-lottery-container" 
-                id="ck-lottery-frame"
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                allow="fullscreen"
-                loading="eager">
-        </iframe>
+    <div class="main-content">
+      <!-- Prediction Section -->
+      <div id="prediction-section" class="content-section active">
+        <div class="container">
+          <header>
+            <h1>Lottery Tricks Ai Perdition</h1>
+            <p class="subtitle">Premium Real-time Data with AI Forecasting</p>
+          </header>
+          
+          <div class="status-card">
+            <div class="status-title">CONNECTION STATUS</div>
+            <div id="meta">Waiting for broadcaster...</div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="server-controls">
+            <button class="server-btn server-1" id="server1-btn" onclick="activateServer(1)">
+              <i class="fas fa-chart-pie"></i> RESULTS BIG/SMALL PREDICTION
+              <div class="server-status">
+                <div class="status-indicator" id="server1-indicator"></div>
+                <span id="server1-status">OFF</span>
+              </div>
+              <div class="cooldown-overlay" id="server1-cooldown" style="display: none;">
+                <div class="cooldown-timer" id="server1-timer">10:00</div>
+              </div>
+            </button>
+            
+            <button class="server-btn server-2" id="server2-btn" onclick="activateServer(2)">
+              <i class="fas fa-star"></i> PREMIUM CODE PREDICTION
+              <div class="server-status">
+                <div class="status-indicator" id="server2-indicator"></div>
+                <span id="server2-status">OFF</span>
+              </div>
+              <div class="cooldown-overlay" id="server2-cooldown" style="display: none;">
+                <div class="cooldown-timer" id="server2-timer">10:00</div>
+              </div>
+            </button>
+            
+            <button class="server-btn server-3" id="server3-btn" onclick="activateServer(3)">
+              <i class="fas fa-robot"></i> AI PREDICTION SERVER
+              <div class="server-status">
+                <div class="status-indicator" id="server3-indicator"></div>
+                <span id="server3-status">OFF</span>
+              </div>
+              <div class="cooldown-overlay" id="server3-cooldown" style="display: none;">
+                <div class="cooldown-timer" id="server3-timer">10:00</div>
+              </div>
+            </button>
+          </div>
+
+          <div class="prediction-section">
+            <div class="section-title">NEXT DRAW PREDICTION</div>
+            
+            <div class="prediction-container">
+              <div class="prediction-box">
+                <div class="prediction-header">NEXT ISSUE</div>
+                <div class="issue-number" id="next-issue">-</div>
+                <div class="prediction-header">LUXE PREDICTION</div>
+                <div class="prediction-result" id="prediction-value">SELECT SERVER</div>
+                <div class="server-status" id="active-server-status">
+                  <div class="status-indicator"></div>
+                  <span>No server active</span>
+                </div>
+              </div>
+              
+              <div class="countdown-box">
+                <div class="prediction-header">NEXT DRAW IN</div>
+                <div class="circular-countdown">
+                  <svg class="countdown-circle" viewBox="0 0 120 120">
+                    <circle class="countdown-background" cx="60" cy="60" r="54"></circle>
+                    <circle class="countdown-progress" cx="60" cy="60" r="54" id="countdown-progress"></circle>
+                  </svg>
+                  <div class="countdown-text">
+                    <div class="countdown-time" id="countdown-time">30s</div>
+                    <div class="countdown-label">REMAINING</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Big/Small Stats (All Servers) -->
+            <div class="stats-container">
+              <div class="stat-box">
+                <div class="stat-label"><i class="fas fa-arrow-up"></i> BIG COUNT</div>
+                <div class="stat-bar">
+                  <div class="big-bar-fill" id="big-fill"></div>
+                </div>
+                <div class="stat-count" id="big-count">0 (0%)</div>
+              </div>
+              
+              <div class="stat-box">
+                <div class="stat-label"><i class="fas fa-arrow-down"></i> SMALL COUNT</div>
+                <div class="stat-bar">
+                  <div class="small-bar-fill" id="small-fill"></div>
+                </div>
+                <div class="stat-count" id="small-count">0 (0%)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <div class="history-section">
+            <div class="section-title">DRAW HISTORY</div>
+            <div class="table-container">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th><i class="fas fa-hashtag"></i> ISSUE</th>
+                    <th><i class="fas fa-number"></i> NUMBER</th>
+                    <th><i class="fas fa-palette"></i> COLOR</th>
+                    <th><i class="fas fa-balance-scale"></i> BIG/SMALL</th>
+                    <th><i class="fas fa-star"></i> PREMIUM</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                  <tr>
+                    <td colspan="5" class="no-data">No data available</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CK Lottery Section - FIXED -->
+      <div id="cklottery-section" class="content-section">
+        <div class="iframe-container">
+          <!-- Fixed iframe with proper attributes -->
+          <iframe src="http://www.cklottery.info/#/register?invitationCode=81487219676" 
+                  class="ck-lottery-container" 
+                  id="ck-lottery-frame"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
+                  allow="fullscreen"
+                  loading="eager">
+          </iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -759,6 +1067,230 @@
   <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js"></script>
 
   <script>
+  // ===== Key Activation System =====
+  // Firebase Configuration for Key System
+  const firebaseConfigKey = {
+    apiKey: "AIzaSyAy3QvFmhKiOX38MZiINfZq2yYXGhb7uL8",
+    authDomain: "ck-adm.firebaseapp.com",
+    databaseURL: "https://ck-adm-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "ck-adm",
+    storageBucket: "ck-adm.appspot.com",
+    messagingSenderId: "192822942347",
+    appId: "1:192822942347:web:f27eee393e16c84544528e"
+  };
+
+  // Initialize Firebase for Key System
+  const firebaseAppKey = firebase.initializeApp(firebaseConfigKey, "KeySystem");
+  const dbKey = firebase.database(firebaseAppKey);
+
+  // Global Variables for Key System
+  let expireTime = parseInt(localStorage.getItem('expireTime')) || 0;
+  let timerInterval;
+
+  // Key Activation Functions
+  function activateKey() {
+    const key = document.getElementById('keyInput').value.trim().toUpperCase();
+    if (!key) {
+      alert("Please enter a key");
+      return;
+    }
+
+    // Show loading state
+    const btn = document.querySelector('#key-activation-page button');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> VERIFYING...';
+    btn.disabled = true;
+
+    dbKey.ref('keys/' + key).once('value').then(snapshot => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        if (data.used) {
+          alert("This key is already used!");
+          return;
+        }
+        
+        const extraTime = data.duration * 60 * 1000;
+        expireTime = Math.max(Date.now(), expireTime) + extraTime;
+        localStorage.setItem('expireTime', expireTime);
+        
+        dbKey.ref('keys/' + key).update({ used: true });
+        
+        // Show success
+        document.getElementById('key-success-content').style.display = 'block';
+        alert(`Key Activated! Added ${data.duration} minutes`);
+        startSession();
+      } else {
+        alert("Invalid Key");
+      }
+    }).catch(error => {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      alert("Connection error. Please try again.");
+      console.error(error);
+    });
+  }
+
+  function startSession() {
+    if (timerInterval) clearInterval(timerInterval);
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    const now = Date.now();
+    const remaining = expireTime - now;
+    
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timer').textContent = "Premium expired";
+      document.getElementById('key-success-content').style.display = 'none';
+      localStorage.removeItem('expireTime');
+      return;
+    }
+    
+    const hours = Math.floor(remaining / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+    
+    document.getElementById('timer').textContent = `Premium expires in: ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  function showPredictionPage() {
+    document.getElementById('key-activation-page').style.display = 'none';
+    document.getElementById('prediction-page').style.display = 'block';
+    
+    // Initialize the prediction system
+    initializePredictionSystem();
+  }
+
+  // Check if session is active on page load
+  if (expireTime && Date.now() < expireTime) {
+    // If session is active, show success content
+    document.getElementById('key-success-content').style.display = 'block';
+    startSession();
+  }
+
+  // ===== Prediction System =====
+  // Firebase Configuration for Prediction System
+  const firebaseConfigPrediction = {
+    apiKey: "AIzaSyDj6z3O91NnlQ1zVdripiGhqQMsQhR4_ak",
+    authDomain: "ck30-35e97.firebaseapp.com",
+    databaseURL: "https://ck30-35e97-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "ck30-35e97",
+    storageBucket: "ck30-35e97.firebasestorage.app",
+    messagingSenderId: "625630152314",
+    appId: "1:625630152314:web:c035009eec389371b51dc3",
+    measurementId: "G-6Z7DYPKHR2"
+  };
+  
+  // Initialize Firebase for Prediction System
+  let firebaseAppPrediction;
+  let db;
+  let ref;
+
+  function initializePredictionSystem() {
+    // Initialize Firebase
+    firebaseAppPrediction = firebase.initializeApp(firebaseConfigPrediction, "PredictionSystem");
+    db = firebase.database(firebaseAppPrediction);
+    ref = db.ref("bigwin/default");
+    
+    // Initialize the rest of the prediction system
+    initializeCooldowns();
+    startCountdown();
+    
+    // Show loading state
+    const tbody = document.getElementById("tbody");
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="loading">
+          <div class="spinner"></div>
+          <span>Loading data...</span>
+        </td>
+      </tr>
+    `;
+
+    // Set up Firebase event listener
+    ref.on("value", (snap) => {
+      const v = snap.val();
+      
+      if (!v) {
+        document.getElementById("meta").textContent = "No data available from broadcaster";
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="no-data">No data available</td>
+          </tr>
+        `;
+        document.getElementById("prediction-value").textContent = "NO DATA";
+        return;
+      }
+
+      // Check if new data arrived
+      const currentPublishedTime = new Date(v.publishedAt).getTime();
+      if (currentPublishedTime > lastPublishedTime) {
+        lastPublishedTime = currentPublishedTime;
+        startCountdown();
+      }
+
+      // Update status information
+      const metaText = `Server: ${v.serviceNowTime} | Status: ${v.msg} (${v.code})`;
+      document.getElementById("meta").textContent = metaText;
+
+      // Update table data
+      if (v.list && v.list.length > 0) {
+        tbody.innerHTML = "";
+        
+        // Sort list by issue number (newest first)
+        const sortedList = [...v.list].sort((a, b) => {
+          return b.issueNumber - a.issueNumber;
+        });
+        
+        // Update previous results for prediction
+        previousResults = sortedList.map(item => {
+          return {
+            issueNumber: item.issueNumber,
+            number: item.number,
+            colour: item.colour,
+            bigSmall: getBigSmall(item.number),
+            premium: item.premium
+          };
+        }).slice(0, MAX_HISTORY);
+        
+        // Update next issue number
+        const nextIssueNumber = getNextIssueNumber(sortedList[0].issueNumber);
+        document.getElementById("next-issue").textContent = nextIssueNumber;
+        
+        // Update prediction if server is active
+        updatePredictionDisplay();
+        updateCKPredictionDisplay();
+        
+        // Display all results
+        sortedList.forEach(item => {
+          const bigSmall = getBigSmall(item.number);
+          const bigSmallClass = bigSmall === 'BIG' ? 'big' : 'small';
+          
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${item.issueNumber}</td>
+            <td>${item.number}</td>
+            <td class="${item.colour}">${item.colour}</td>
+            <td class="${bigSmallClass}">${bigSmall}</td>
+            <td>${item.premium}</td>`;
+          tbody.appendChild(tr);
+        });
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="no-data">No data available</td>
+          </tr>
+        `;
+        document.getElementById("prediction-value").textContent = "NO DATA";
+      }
+    });
+  }
+
   // ===== Menu System =====
   function showSection(sectionName) {
     // Hide all sections
@@ -778,41 +1310,31 @@
     // Update CK Lottery prediction display if needed
     if (sectionName === 'cklottery') {
       updateCKPredictionDisplay();
-      // Force iframe to reload when switching to CK Lottery section
-      const iframe = document.getElementById('ck-lottery-frame');
-      iframe.src = iframe.src; // This will reload the iframe
+      // Enable scrolling for CK Lottery section
+      document.body.style.overflow = 'auto';
+      
+      // Don't reload the iframe when switching to CK Lottery section
+      // This prevents the refresh issue
+    } else {
+      // Enable scrolling for other sections
+      document.body.style.overflow = 'auto';
     }
   }
 
-  // ===== Firebase Config =====
-  const firebaseConfig = {
-    apiKey: "AIzaSyDj6z3O91NnlQ1zVdripiGhqQMsQhR4_ak",
-    authDomain: "ck30-35e97.firebaseapp.com",
-    databaseURL: "https://ck30-35e97-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "ck30-35e97",
-    storageBucket: "ck30-35e97.firebasestorage.app",
-    messagingSenderId: "625630152314",
-    appId: "1:625630152314:web:c035009eec389371b51dc3",
-    measurementId: "G-6Z7DYPKHR2"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-
-  // ===== Global Variables =====
+  // ===== Global Variables for Prediction System =====
   let activeServer = 0; // 0 = none, 1 = Big/Small, 2 = Premium Code, 3 = AI
   let previousResults = [];
   const MAX_HISTORY = 100;
   let countdownInterval;
   let lastPublishedTime = 0;
   
-  // Cooldown variables
+  // Cooldown variables - Load from localStorage if available
   let serverCooldowns = {
-    1: 0, // Cooldown end time for server 1
-    2: 0, // Cooldown end time for server 2
-    3: 0  // Cooldown end time for server 3
+    1: localStorage.getItem('serverCooldown1') ? parseInt(localStorage.getItem('serverCooldown1')) : 0,
+    2: localStorage.getItem('serverCooldown2') ? parseInt(localStorage.getItem('serverCooldown2')) : 0,
+    3: localStorage.getItem('serverCooldown3') ? parseInt(localStorage.getItem('serverCooldown3')) : 0
   };
+  
   let cooldownInterval;
 
   // ===== Server Control Functions =====
@@ -907,6 +1429,9 @@
     const cooldownDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
     serverCooldowns[serverNumber] = Date.now() + cooldownDuration;
     
+    // Save to localStorage
+    localStorage.setItem(`serverCooldown${serverNumber}`, serverCooldowns[serverNumber].toString());
+    
     const cooldownOverlay = document.getElementById(`server${serverNumber}-cooldown`);
     const cooldownTimer = document.getElementById(`server${serverNumber}-timer`);
     const btn = document.getElementById(`server${serverNumber}-btn`);
@@ -941,6 +1466,9 @@
           cooldownOverlay.style.display = 'none';
           btn.disabled = false;
         }
+        
+        // Remove from localStorage when cooldown is finished
+        localStorage.removeItem(`serverCooldown${serverNumber}`);
       }
     }
     
@@ -957,6 +1485,7 @@
     if (remainingTime <= 0) {
       // Cooldown finished
       serverCooldowns[serverNumber] = 0;
+      localStorage.removeItem(`serverCooldown${serverNumber}`);
       return;
     }
     
@@ -973,19 +1502,24 @@
     return serverCooldowns[serverNumber] > Date.now();
   }
 
-  // ===== Firebase Subscription =====
-  const ref = db.ref("bigwin/default");
-  
-  // Show loading state
-  const tbody = document.getElementById("tbody");
-  tbody.innerHTML = `
-    <tr>
-      <td colspan="5" class="loading">
-        <div class="spinner"></div>
-        <span>Loading data...</span>
-      </td>
-    </tr>
-  `;
+  // Initialize cooldown display on page load
+  function initializeCooldowns() {
+    for (let serverNumber of [1, 2, 3]) {
+      if (isServerInCooldown(serverNumber)) {
+        const cooldownOverlay = document.getElementById(`server${serverNumber}-cooldown`);
+        const btn = document.getElementById(`server${serverNumber}-btn`);
+        
+        cooldownOverlay.style.display = 'flex';
+        btn.disabled = true;
+        updateCooldownDisplay(serverNumber);
+      }
+    }
+    
+    // Start cooldown interval if any cooldowns are active
+    if (serverCooldowns[1] > Date.now() || serverCooldowns[2] > Date.now() || serverCooldowns[3] > Date.now()) {
+      cooldownInterval = setInterval(updateAllCooldowns, 1000);
+    }
+  }
 
   // Function to determine Big or Small based on number
   function getBigSmall(number) {
@@ -1540,88 +2074,6 @@
     bigCount.textContent = `${stats.big} (${bigPercentage.toFixed(1)}%)`;
     smallCount.textContent = `${stats.small} (${smallPercentage.toFixed(1)}%)`;
   }
-  
-  // ===== Firebase Event Listener =====
-  ref.on("value", (snap) => {
-    const v = snap.val();
-    
-    if (!v) {
-      document.getElementById("meta").textContent = "No data available from broadcaster";
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="5" class="no-data">No data available</td>
-        </tr>
-      `;
-      document.getElementById("prediction-value").textContent = "NO DATA";
-      return;
-    }
-
-    // Check if new data arrived
-    const currentPublishedTime = new Date(v.publishedAt).getTime();
-    if (currentPublishedTime > lastPublishedTime) {
-      lastPublishedTime = currentPublishedTime;
-      startCountdown();
-    }
-
-    // Update status information
-    const metaText = `Server: ${v.serviceNowTime} | Status: ${v.msg} (${v.code})`;
-    document.getElementById("meta").textContent = metaText;
-
-    // Update table data
-    if (v.list && v.list.length > 0) {
-      tbody.innerHTML = "";
-      
-      // Sort list by issue number (newest first)
-      const sortedList = [...v.list].sort((a, b) => {
-        return b.issueNumber - a.issueNumber;
-      });
-      
-      // Update previous results for prediction
-      previousResults = sortedList.map(item => {
-        return {
-          issueNumber: item.issueNumber,
-          number: item.number,
-          colour: item.colour,
-          bigSmall: getBigSmall(item.number),
-          premium: item.premium
-        };
-      }).slice(0, MAX_HISTORY);
-      
-      // Update next issue number
-      const nextIssueNumber = getNextIssueNumber(sortedList[0].issueNumber);
-      document.getElementById("next-issue").textContent = nextIssueNumber;
-      
-      // Update prediction if server is active
-      updatePredictionDisplay();
-      updateCKPredictionDisplay();
-      
-      // Display all results
-      sortedList.forEach(item => {
-        const bigSmall = getBigSmall(item.number);
-        const bigSmallClass = bigSmall === 'BIG' ? 'big' : 'small';
-        
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${item.issueNumber}</td>
-          <td>${item.number}</td>
-          <td class="${item.colour}">${item.colour}</td>
-          <td class="${bigSmallClass}">${bigSmall}</td>
-          <td>${item.premium}</td>`;
-        tbody.appendChild(tr);
-      });
-    } else {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="5" class="no-data">No data available</td>
-        </tr>
-      `;
-      document.getElementById("prediction-value").textContent = "NO DATA";
-    }
-  });
-
-  // Start initial countdown and check for existing cooldowns
-  startCountdown();
-  updateAllCooldowns();
   </script>
 </body>
 </html>
