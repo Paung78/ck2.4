@@ -743,6 +743,7 @@
       border: none;
       border-radius: 0;
       overflow: auto;
+      background: white;
     }
     
     .iframe-container {
@@ -1049,14 +1050,14 @@
       <!-- CK Lottery Section - FIXED -->
       <div id="cklottery-section" class="content-section">
         <div class="iframe-container">
-          <!-- Fixed iframe with proper attributes for GitHub Pages -->
+          <!-- Fixed iframe with proper attributes for full display -->
           <iframe src="https://www.cklottery.info/#/register?invitationCode=81487219676" 
                   class="ck-lottery-container" 
                   id="ck-lottery-frame"
-                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock"
-                  allow="fullscreen"
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-pointer-lock allow-top-navigation"
+                  allow="fullscreen *"
                   loading="eager"
-                  style="width: 100%; height: 100%; border: none;">
+                  style="width: 100%; height: 100%; border: none; background: white;">
           </iframe>
         </div>
       </div>
@@ -1174,6 +1175,34 @@
     startSession();
   }
 
+  // ===== CK Lottery Frame Enhancement =====
+  function enhanceCKFrame() {
+    const frame = document.getElementById('ck-lottery-frame');
+    
+    // Add event listener for frame load
+    frame.addEventListener('load', function() {
+      console.log('CK Lottery frame loaded successfully');
+      
+      // Try to inject some CSS to fix display issues
+      try {
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        const style = frameDoc.createElement('style');
+        style.textContent = `
+          body { 
+            overflow: auto !important; 
+            min-height: 100vh !important;
+          }
+          * {
+            max-width: none !important;
+          }
+        `;
+        frameDoc.head.appendChild(style);
+      } catch (e) {
+        console.log('Cannot modify frame content due to security restrictions');
+      }
+    });
+  }
+
   // ===== Prediction System =====
   // Firebase Configuration for Prediction System
   const firebaseConfigPrediction = {
@@ -1201,6 +1230,9 @@
     // Initialize the rest of the prediction system
     initializeCooldowns();
     startCountdown();
+    
+    // Enhance CK Lottery frame
+    enhanceCKFrame();
     
     // Show loading state
     const tbody = document.getElementById("tbody");
