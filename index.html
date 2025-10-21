@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lottery Tricks Ai Perdition</title>
+  <title>Luxe Lottery AI Prediction</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -757,6 +757,37 @@
       background: white;
     }
     
+    /* Alternative CK Lottery Access */
+    .ck-alternative {
+      padding: 20px;
+      text-align: center;
+      background: rgba(26, 26, 46, 0.9);
+      border-radius: 15px;
+      margin: 15px;
+      border: 1px solid rgba(233, 185, 73, 0.3);
+    }
+    
+    .ck-alternative h3 {
+      color: #e9b949;
+      margin-bottom: 15px;
+    }
+    
+    .ck-link-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #e9b949, #d4af37);
+      color: #1a1a2e;
+      text-decoration: none;
+      border-radius: 10px;
+      font-weight: 600;
+      margin: 5px;
+      transition: transform 0.2s;
+    }
+    
+    .ck-link-button:hover {
+      transform: translateY(-2px);
+    }
+    
     /* Mobile optimizations */
     @media (max-width: 480px) {
       .external-controls {
@@ -861,7 +892,7 @@
         <div class="logo">
           <i class="fas fa-crown"></i>
         </div>
-        <h1>Lottery Tricks Ai Perdition</h1>
+        <h1>LUXE LOTTERY AI</h1>
         <div class="subtitle">Premium Prediction System</div>
       </div>
       
@@ -886,7 +917,7 @@
         </button>
       </div>
       
-      <div class="footer">CREDITS BY PYAUNGGYI | Lottery Tricks Ai Perdition</div>
+      <div class="footer">CREDITS BY PYAUNGGYI | LUXE EDITION</div>
     </div>
   </div>
 
@@ -894,7 +925,7 @@
   <div id="prediction-page">
     <!-- Premium Header -->
     <div class="premium-header">
-      <h1>Lottery Tricks Ai Perdition</h1>
+      <h1>LUXE LOTTERY AI PREDICTION</h1>
       <div class="subtitle">Premium Real-time Lottery Forecasting</div>
     </div>
 
@@ -924,7 +955,7 @@
       <div id="prediction-section" class="content-section active">
         <div class="container">
           <header>
-            <h1>Lottery Tricks Ai Perdition</h1>
+            <h1>LUXE LOTTERY AI PREDICTION</h1>
             <p class="subtitle">Premium Real-time Data with AI Forecasting</p>
           </header>
           
@@ -1048,7 +1079,7 @@
 
       <!-- CK Lottery Section - FIXED -->
       <div id="cklottery-section" class="content-section">
-        <div class="iframe-container">
+        <div class="iframe-container" id="iframe-container">
           <!-- Fixed iframe with proper attributes -->
           <iframe src="http://www.cklottery.info/#/register?invitationCode=81487219676" 
                   class="ck-lottery-container" 
@@ -1057,6 +1088,23 @@
                   allow="fullscreen"
                   loading="eager">
           </iframe>
+        </div>
+        
+        <!-- Alternative CK Lottery Access -->
+        <div class="ck-alternative" id="ck-alternative" style="display: none;">
+          <h3><i class="fas fa-exclamation-triangle"></i> CK Lottery Access</h3>
+          <p>If the CK Lottery website is not loading, please use one of the following options:</p>
+          <div style="margin: 15px 0;">
+            <a href="http://www.cklottery.info/#/register?invitationCode=81487219676" target="_blank" class="ck-link-button">
+              <i class="fas fa-external-link-alt"></i> Open CK Lottery in New Tab
+            </a>
+            <a href="https://cklottery.info" target="_blank" class="ck-link-button">
+              <i class="fas fa-home"></i> CK Lottery Homepage
+            </a>
+          </div>
+          <p style="font-size: 12px; color: #a0a0a0; margin-top: 10px;">
+            <i class="fas fa-info-circle"></i> Some browsers block embedded content for security reasons.
+          </p>
         </div>
       </div>
     </div>
@@ -1171,6 +1219,28 @@
     // If session is active, show success content
     document.getElementById('key-success-content').style.display = 'block';
     startSession();
+  }
+
+  // ===== CK Lottery Frame Detection =====
+  function checkCKFrame() {
+    const frame = document.getElementById('ck-lottery-frame');
+    const alternative = document.getElementById('ck-alternative');
+    
+    // Check if frame is loaded properly
+    setTimeout(() => {
+      try {
+        // Try to access frame content (this will fail if blocked)
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        if (!frameDoc || frameDoc.readyState === 'complete') {
+          // Frame loaded successfully
+          alternative.style.display = 'none';
+        }
+      } catch (e) {
+        // Frame is blocked, show alternative
+        frame.style.display = 'none';
+        alternative.style.display = 'block';
+      }
+    }, 3000);
   }
 
   // ===== Prediction System =====
@@ -1312,6 +1382,9 @@
       updateCKPredictionDisplay();
       // Enable scrolling for CK Lottery section
       document.body.style.overflow = 'auto';
+      
+      // Check if CK frame is working
+      checkCKFrame();
       
       // Don't reload the iframe when switching to CK Lottery section
       // This prevents the refresh issue
@@ -1747,7 +1820,7 @@
       bigCount: 0,
       smallCount: 0,
       premiumPatterns: [],
-      numberFrequencies: {0:0,1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
+      numberFrequencies: {0:0,1:2,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0},
       colorPatterns: {red: 0, green: 0}
     };
 
