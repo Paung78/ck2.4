@@ -1191,8 +1191,18 @@
           body { 
             overflow: auto !important; 
             min-height: 100vh !important;
+            padding: 0 !important;
+            margin: 0 !important;
           }
           * {
+            max-width: none !important;
+          }
+          html, body {
+            width: 100% !important;
+            height: 100% !important;
+          }
+          .container, .wrapper, .main, .content {
+            width: 100% !important;
             max-width: none !important;
           }
         `;
